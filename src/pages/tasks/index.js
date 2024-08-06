@@ -31,9 +31,20 @@ function Row(props) {
     tasks.every((task) => task.completed)
   );
 
+  const validateInput = (input) => {
+    // Add your validation logic here
+    // For example, let's say the input is valid if it's not empty
+    return input.trim() !== "";
+  };
+
   const handleTaskChange = (index, field, value) => {
     const newTasks = [...tasks];
     newTasks[index][field] = value;
+
+    if (field === "input" && validateInput(value)) {
+      newTasks[index].completed = true;
+    }
+
     setTasks(newTasks);
     setAllCompleted(newTasks.every((task) => task.completed));
   };
@@ -71,7 +82,10 @@ function Row(props) {
             sx={{ width: "100%" }}
           >
             <Box sx={{ margin: 1, width: "100%" }}>
-              <Table size="small" sx={{ width: "100%", tableLayout: "fixed" }}>
+              <Table
+                size="small"
+                sx={{ width: "100%", tableLayout: "fixed" }}
+              >
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ width: "40%" }}>
@@ -98,6 +112,7 @@ function Row(props) {
                       <TableCell align="right">
                         <Checkbox
                           checked={task.completed}
+                          disabled
                           onChange={(e) =>
                             handleTaskChange(
                               index,

@@ -38,10 +38,10 @@ export const Footer = () => {
       />
       <BottomNavigationAction
         label="Tasks"
-        value="/tasks"
+        value="/"
         icon={<ChecklistIcon />}
         component={Link}
-        to="/tasks"
+        to="/"
       />
       <BottomNavigationAction
         label="Scan"

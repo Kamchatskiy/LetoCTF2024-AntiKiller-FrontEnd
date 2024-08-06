@@ -4,8 +4,8 @@ import { Header } from "./components/header";
 import { Footer } from "./components/footer";
 import { Tasks } from "./pages/tasks";
 import { Rating } from "./pages/rating";
-import "./style.css"
 import { Scan } from "./pages/scan";
+import "./style.css"
 
 export const App = () => {
   return (
@@ -13,9 +13,9 @@ export const App = () => {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="tasks" element={<Tasks />} />
+          <Route path="/" element={<Tasks />} />
           <Route path="rating" element={<Rating />} />
-          <Route path="scan" element={<Scan />} />
+          <Route path="/scan" element={<Scan />} />
         </Routes>
         <Footer />
       </BrowserRouter>
