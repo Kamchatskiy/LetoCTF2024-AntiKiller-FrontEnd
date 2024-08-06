@@ -10,12 +10,11 @@ export const Header = () => {
       sx={{
         display: "flex",
         flexDirection: "row",
-        color: "#6326ed",
         bgcolor: "#000000",
         borderColor: "#6326ed",
         borderBottom: 1,
         borderBottomWidth: 3,
-        height: "10%"
+        height: "10%",
       }}
     >
       <Box
@@ -31,10 +30,10 @@ export const Header = () => {
             display: "flex",
             alignItems: "center",
             border: 0.2,
-            bgcolor: "#6326ed",
+            bgcolor: "#7cf105",
             color: "#000000",
             marginBottom: 0.3,
-            width: "35%"
+            width: "35%",
           }}
         >
           <StyledBadge
