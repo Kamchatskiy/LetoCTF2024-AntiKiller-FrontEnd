@@ -32,8 +32,6 @@ function Row(props) {
   );
 
   const validateInput = (input) => {
-    // Add your validation logic here
-    // For example, let's say the input is valid if it's not empty
     return input.trim() !== "";
   };
 
@@ -82,10 +80,7 @@ function Row(props) {
             sx={{ width: "100%" }}
           >
             <Box sx={{ margin: 1, width: "100%" }}>
-              <Table
-                size="small"
-                sx={{ width: "100%", tableLayout: "fixed" }}
-              >
+              <Table size="small" sx={{ width: "100%", tableLayout: "fixed" }}>
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ width: "40%" }}>
@@ -103,6 +98,9 @@ function Row(props) {
                       <TableCell>{task.description}</TableCell>
                       <TableCell>
                         <TextField
+                          sx={{
+                            width: "100%",
+                          }}
                           value={task.input}
                           onChange={(e) =>
                             handleTaskChange(index, "input", e.target.value)
@@ -150,42 +148,37 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const rows = [
-  createData(1, "John Doe", [
-    {
-      dateReceived: "2022-01-01",
-      dateCompleted: "",
-      description: "Task 1",
-      input: "",
-      completed: false,
-    },
-    {
-      dateReceived: "2022-01-02",
-      dateCompleted: "",
-      description: "Task 2",
-      input: "",
-      completed: false,
-    },
-  ]),
-  createData(2, "Jane Doe", [
-    {
-      dateReceived: "2022-01-03",
-      dateCompleted: "",
-      description: "Task 3",
-      input: "",
-      completed: false,
-    },
-    {
-      dateReceived: "2022-01-04",
-      dateCompleted: "",
-      description: "Task 4",
-      input: "",
-      completed: false,
-    },
-  ]),
-];
-
 export const Tasks = () => {
+  const [rows, setRows] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await fetch("http://10.0.0.3:5000/tasks");
+        const data = await response.json();
+        const rows = data.map((task, index) =>
+          createData(index, "Person", [task])
+        );
+        setRows(rows);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+    fetchTasks();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <TableContainer component={Paper} sx={{ width: "100%", overflowX: "auto" }}>
       <Table aria-label="Tasks" sx={{ width: "100%" }}>
