@@ -8,34 +8,27 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Divider } from "@mui/material";
 
-function createData(place, person, score) {
-  return { place, person, score };
-}
-
-const rows = [
-  createData(1, "John Doe", 95),
-  createData(2, "Jane Smith", 92),
-  createData(3, "Bob Johnson", 88),
-  createData(4, "Alice Brown", 85),
-  createData(5, "Mike Davis", 82),
-  createData(6, "Emily Chen", 80),
-  createData(7, "David Lee", 78),
-  createData(8, "Sarah Taylor", 75),
-  createData(9, "Kevin White", 72),
-  createData(10, "Olivia Martin", 70),
-  createData(11, "William Harris", 68),
-  createData(12, "Ava Thompson", 65),
-  createData(13, "James Wilson", 62),
-  createData(14, "Isabella Garcia", 60),
-  createData(15, "Robert Miller", 58),
-  createData(16, "Sophia Rodriguez", 55),
-  createData(17, "Michael Brown", 52),
-  createData(18, "Charlotte Davis", 50),
-  createData(19, "Daniel Lee", 48),
-  createData(20, "Abigail Johnson", 45),
-];
-
 export const Rating = () => {
+  const [data, setData] = React.useState([]);
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://10.0.0.3:5000/scoreboard");
+        const json = await response.json();
+        setData(json);
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <TableContainer component={Paper} sx={{ width: "100%" }}>
       <Table sx={{ width: "100%" }} aria-label="rating table">
@@ -47,29 +40,29 @@ export const Rating = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {data.map((row, index) => (
             <TableRow
-              key={row.place}
+              key={row.id}
               sx={{
                 backgroundColor:
-                  row.place === 1
+                  index === 0
                     ? "#ffd700"
-                    : row.place === 2
+                    : index === 1
                     ? "#c0c0c0"
-                    : row.place === 3
+                    : index === 2
                     ? "#cd7f32"
                     : "inherit",
               }}
             >
-              <TableCell sx={{ color: row.place <= 3 ? "#000" : "inherit" }}>
-                {row.place}
+              <TableCell sx={{ color: index <= 2 ? "#000" : "inherit" }}>
+                {index + 1}
               </TableCell>
-              <TableCell sx={{ color: row.place <= 3 ? "#000" : "inherit" }}>
-                {row.person}
+              <TableCell sx={{ color: index <= 2 ? "#000" : "inherit" }}>
+                {row.username}
               </TableCell>
               <TableCell
                 align="right"
-                sx={{ color: row.place <= 3 ? "#000" : "inherit" }}
+                sx={{ color: index <= 2 ? "#000" : "inherit" }}
               >
                 {row.score}
               </TableCell>
